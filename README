@@ -1,0 +1,18 @@
+Rack-ntlm
+=========
+
+Usage:
+ 
+ script/plugin install git://github.com/lukefx/rack-ntlm.git 
+
+ Define your auth(username, domain) method, with ldap or whatever you want.
+
+ # config/environment.rb
+ config.middleware.use "Rack::Ntlm"
+
+Example
+=======
+
+
+
+Copyright (c) 2009 [Rack-Ntlm], released under the MIT license
