@@ -117,6 +117,15 @@ module Net  #:nodoc:
         swap16(Kconv.kconv(str, Kconv::UTF16, Kconv::ASCII))
       end
     
+      def unpack_int64le(str,offset=0)
+        if str.size >= offset + 8
+          d, u = str.slice(offset, 8).unpack("V2")
+          (u * 0x100000000 + d)
+        else
+          0
+        end
+      end
+
       def pack_int64le(val)
           [val & 0x00000000ffffffff, val >> 32].pack("V2")
       end
@@ -698,6 +707,10 @@ module Net  #:nodoc:
           end
           cc = NTLM::pack_int64le(cc) if cc.is_a?(Integer)
           opt[:client_challenge] = cc
+
+          if !has_flag?(:OEM) and !has_flag?(:UNICODE)
+            raise ArgumentError, "SEC_E_INVALID_TOKEN"
+          end
 
           if has_flag?(:OEM) and opt[:unicode]
             usr = NTLM::decode_utf16le(usr)
