@@ -8,9 +8,9 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Luca Simone"]
   s.email       = ["info@lucasimone.info"]
-  s.homepage    = "github.com/lukefx"
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.homepage    = "https://github.com/lukefx/rack-ntlm"
+  s.summary     = %q{Rack module for NTLM Auth}
+  s.description = %q{Rack module for NTLM Authentication against an ActiveDirectory or other LDAP Server}
 
   s.rubyforge_project = "rack-ntlm"
 
@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_dependency "net/ntlm"
-  s.add_dependency "net/ldap"
+  s.add_dependency "rubyntlm"
+  s.add_dependency "net-ldap"
 
 end
