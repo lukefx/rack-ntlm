@@ -10,14 +10,22 @@ Transparent authentication with NTLM.
 
   Then add rack-ntlm to the middleware chain in config/application.rb (Rails 3)
 
-    config.middleware.use "Rack::Ntlm"
+  config.middleware.use "Rack::Ntlm", {
+    :uri_pattern => /\/login/                       # (default = /\//) (any URL)
+    :host => '<Active Directory hostname>',
+    :port => 389,                                   # default = 389
+    :base => 'Base namespace for LDAP search',
+    :search_filter => '(dn=%1)'                     # default = (sAMAccountName=%1)
+    :auth => {
+      :username => '<username to bind to LDAP>',
+      :password => '<password to bind to LDAP>'
+  }
 
-
-When a client needs to authenticate itself to a proxy or server using the NTLM scheme then the following 4-way handshake takes place (only parts of the request and status line and the relevant headers are shown here; "C" is the client, "S" the server): 
+  # credits to dtsato to this awesome configuration and defaults
 
 ## How it works?
 
-NTLM it's a transparent authentication system developed by Microsoft, it needs that your webserver use keepalive because the handshake consists in 6 steps all with the same connection.
+NTLM is a transparent authentication system developed by Microsoft, it needs that your webserver use keepalive because the handshake consists in 6 steps all with the same connection.
 
   1: C  --> S   GET ...
 
