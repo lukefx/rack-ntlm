@@ -10,6 +10,7 @@ Transparent authentication with NTLM.
 
   Then add rack-ntlm to the middleware chain in config/application.rb (Rails 3)
 
+  ``` ruby
   config.middleware.use "Rack::Ntlm", {
     :uri_pattern => /\/login/                       # (default = /\//) (any URL)
     :host => '<Active Directory hostname>',
@@ -22,6 +23,7 @@ Transparent authentication with NTLM.
   }
 
   # credits to dtsato to this awesome configuration and defaults
+  ```
 
 ## How it works?
 
