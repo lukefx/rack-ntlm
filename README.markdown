@@ -1,4 +1,4 @@
-## Rack-ntlm
+# Rack-ntlm
 
 Transparent authentication with NTLM.
 
