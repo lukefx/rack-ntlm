@@ -1,3 +1,6 @@
+require 'net/ldap'
+require 'net/ntlm'
+
 module Rack
   class Ntlm
     
