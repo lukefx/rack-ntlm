@@ -1,6 +1,3 @@
-require 'net/ldap'
-require 'net/ntlm'
-
 module Rack
   class Ntlm
     
@@ -19,12 +16,16 @@ module Rack
       ldap.port = @config[:port]
       ldap.base = @config[:base]
       ldap.auth @config[:auth][:username], @config[:auth][:password] if @config[:auth]
-      !ldap.search(:filter => @config[:search_filter].gsub("%1", user)).empty?
+      ldap.search(:filter => @config[:search_filter].gsub("%1", user))
+      ldap.bind_as(:base => @config[:base], :filter => @config[:search_filter].gsub("%1", user), :password => "1234")
     rescue => e
       false
     end
 
     def call(env)
+    
+      puts env.inspect
+    
       if env['PATH_INFO'] =~ @config[:uri_pattern] && env['HTTP_AUTHORIZATION'].blank?
         return [401, {'WWW-Authenticate' => "NTLM"}, []]
       end
@@ -40,7 +41,7 @@ module Rack
 
         if message.type == 3 && env['PATH_INFO'] =~ @config[:uri_pattern]
           user = Net::NTLM::decode_utf16le(message.user)
-          if auth(user)
+          if auth(user, pass)
             env['REMOTE_USER'] = user
           else
             return [401, {}, ["You are not authorized to see this page"]]
