@@ -1,6 +1,17 @@
+### :warning: This gem does NOT verify the user passowrd (see [issue #1](https://github.com/lukefx/rack-ntlm/issues/1))
+
+**If you need verification against Active Directory** probably the best solution is 
+[this comment](https://github.com/lukefx/rack-ntlm/issues/1#issuecomment-5569914).
+
+**Otherwise** you should have the hashed ([LM](http://en.wikipedia.org/wiki/LM_hash), 
+[NT, etc.](http://en.wikipedia.org/wiki/NTLM#Protocol)) version of your users' passwords 
+and manually check the Type-3 response against them.
+
+---
+
 # Rack-ntlm
 
-Transparent authentication with NTLM.
+Transparent authentication with [NTLM](http://davenport.sourceforge.net/ntlm.html).
 
 ## Usage
 
@@ -26,7 +37,7 @@ config.middleware.use 'Rack::Ntlm', {
 }
 ```
 
-**Credits to [@dtsato](https://github.com/dtsato) to this awesome configuration and defaults**
+**Credits to @dtsato to this awesome configuration and defaults**
 
 ## How it works?
 
@@ -44,6 +55,7 @@ use keepalive because the handshake consists in 6 steps all with the same connec
    `Authorization: NTLM <base64-encoded type-1-message>`
 
 4. `C <= S   401 Unauthorized`
+   
    `WWW-Authenticate: NTLM <base64-encoded type-2-message>`
 
 5. `C => S   GET ...`
